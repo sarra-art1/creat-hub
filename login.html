@@ -1,0 +1,12 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Connexion – CreatHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="creathub-pages.css"></head><body>
+<header class="top"><a class="logo" href="shop.html">Creat<b>Hub</b></a><nav><a href="shop.html">Boutique</a><span id="authLinks" class="row"></span></nav></header><main class="narrow"><div class="card"><h1>Connexion</h1><form id="f" novalidate><label>E-mail<input name="email" type="email" autocomplete="email"></label><label>Mot de passe<input name="password" type="password" autocomplete="current-password"></label><p id="m" class="msg" role="alert"></p><button id="b">Se connecter</button></form><p class="muted">Pas de compte ? <a id="su" href="signup.html">Inscription</a></p></div></main>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script defer src="supabase-client.js"></script><script defer src="supabase-shop.js"></script><script defer src="header.js"></script>
+<script>document.addEventListener("DOMContentLoaded",function(){
+var f=document.getElementById('f'),m=document.getElementById('m'),b=document.getElementById('b'),next=new URLSearchParams(location.search).get('next')||'';
+if(next)document.getElementById('su').href='signup.html?next='+encodeURIComponent(next);
+f.onsubmit=async function(e){e.preventDefault();var v=Object.fromEntries(new FormData(f));m.className='msg err';
+if(!v.email||!v.password)return m.textContent='Saisissez votre e-mail et votre mot de passe.';
+b.disabled=true;m.className='msg';m.textContent='Connexion…';
+try{var u=await CH.auth.login(v.email.trim(),v.password);if(!u)throw new Error('Connexion impossible.');location.href=CH.safeNext(next)}
+catch(x){m.className='msg err';m.textContent=CH.friendly(x);b.disabled=false}};});</script></body></html>

@@ -1,0 +1,11 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Vérification – CreatHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="creathub-pages.css"></head><body>
+<header class="top"><a class="logo" href="shop.html">Creat<b>Hub</b></a><nav><a href="shop.html">Boutique</a><span id="authLinks" class="row"></span></nav></header><main class="narrow"><div class="card"><h1>Vérification de l’e-mail</h1><div id="st"><p>Chargement…</p></div></div></main>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script defer src="supabase-client.js"></script><script defer src="supabase-shop.js"></script><script defer src="header.js"></script>
+<script>document.addEventListener("DOMContentLoaded",function(){
+var p=new URLSearchParams(location.search),email=p.get('email')||'',next=p.get('next')||'',st=document.getElementById('st');
+async function show(){var u=await CH.auth.user();
+if(u){st.innerHTML='<p class="msg ok">Votre adresse e-mail est confirmée et vous êtes connecté.</p><a class="btn" href="'+CH.esc(CH.safeNext(next))+'">Continuer</a>';return}
+st.innerHTML='<p>Un e-mail de confirmation a été demandé'+(email?' pour <b>'+CH.esc(email)+'</b>':'')+'. Ouvrez le lien qu’il contient (pensez à vérifier les courriers indésirables). Cette page ne peut pas confirmer à elle seule que le message est arrivé.</p>'+(email?'<button id="r">Renvoyer l’e-mail</button>':'')+'<p id="m" class="msg" role="status"></p><p class="muted">Déjà confirmé ? <a href="login.html'+(next?'?next='+encodeURIComponent(next):'')+'">Se connecter</a></p>';
+var r=document.getElementById('r');if(r)r.onclick=async function(){r.disabled=true;var m=document.getElementById('m');try{await CH.auth.resend(email,next);m.className='msg ok';m.textContent='Nouvel e-mail demandé.';var s=60,t=setInterval(function(){r.textContent='Renvoyer dans '+(--s)+' s';if(s<=0){clearInterval(t);r.disabled=false;r.textContent='Renvoyer l’e-mail'}},1000)}catch(x){m.className='msg err';m.textContent=CH.friendly(x);r.disabled=false}}}
+if(window.sb)window.sb.auth.onAuthStateChange(function(){show()});show();});</script></body></html>
